@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#FFF7F4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>🧸 我的小仓库</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:#FFF7F4;color:#4A4048;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+[hidden]{display:none !important}
+
+.app{max-width:560px;margin:0 auto;padding-bottom:120px;min-height:100vh;position:relative}
+
+/* ---------- 顶部 ---------- */
+header.top{
+  position:sticky;top:0;z-index:20;
+  padding:14px 16px 8px;
+  background:linear-gradient(180deg,#FFF7F4 78%,rgba(255,247,244,.86) 92%,rgba(255,247,244,0));
+}
+.row1{display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:19px;margin:0;font-weight:800;letter-spacing:.3px}
+.sub{font-size:12px;color:#B0A4AC;margin:5px 0 10px}
+.icon-btn{
+  border:0;background:#fff;color:#C7A0AA;width:34px;height:34px;border-radius:12px;
+  font-size:16px;box-shadow:0 2px 10px rgba(255,159,178,.16);line-height:1
+}
+.searchbar{
+  display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;
+  padding:10px 14px;box-shadow:0 2px 12px rgba(255,159,178,.13);
+}
+.searchbar input{border:0;outline:0;flex:1;font-size:14px;background:transparent;color:inherit;min-width:0}
+.searchbar input::placeholder{color:#CFC3CA}
+.searchbar .ic{font-size:13px;opacity:.55}
+#clearSearch{
+  border:0;background:#FFEFF3;color:#C7A0AA;border-radius:50%;
+  width:22px;height:22px;font-size:11px;line-height:1;padding:0;flex:0 0 auto;
+}
+
+.search-hint{
+  font-size:12.5px;color:#A8969E;margin:9px 4px 0;
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;line-height:1.5;
+}
+.search-hint .num{color:#FF8FA8;font-weight:800;font-size:14px;margin:0 1px}
+.search-hint b{color:#E0768B;font-weight:700}
+.search-hint.empty-hint{color:#C7BBC2}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;border:0;background:#fff;color:#8C8089;font-size:13px;
+  padding:8px 14px;border-radius:999px;white-space:nowrap;
+  box-shadow:0 1px 6px rgba(255,159,178,.13);transition:all .15s;
+}
+.chip.on{background:linear-gradient(135deg,#FFB3C1,#FF8FA8);color:#fff;box-shadow:0 4px 12px rgba(255,143,168,.38)}
+/* ★ 归档分类特殊色 */
+.chip.archive{
+  background:#F1EEF8;color:#8A7CB0;
+  box-shadow:0 1px 6px rgba(174,155,224,.2);
+}
+.chip.archive.on{
+  background:linear-gradient(135deg,#C9B8EE,#A78BDE);color:#fff;
+  box-shadow:0 4px 12px rgba(167,139,222,.45);
+}
+.chips.small{padding:2px 0 0}
+.chips.small .chip{font-size:12.5px;padding:7px 12px}
+
+.chips.subrow{padding:4px 0 2px;gap:7px}
+.chips.subrow .chip{
+  font-size:12px;padding:6px 11px;background:#F4FBF8;color:#6BAA98;
+  box-shadow:0 1px 6px rgba(142,213,189,.18);
+}
+.chips.subrow .chip.on{
+  background:linear-gradient(135deg,#B6E6D6,#7FD3B6);color:#fff;
+  box-shadow:0 4px 12px rgba(127,211,182,.42);
+}
+.chips.subrow.lv3 .chip{
+  background:#F5F2FC;color:#8E7AC9;
+  box-shadow:0 1px 6px rgba(174,155,224,.2);
+}
+.chips.subrow.lv3 .chip.on{
+  background:linear-gradient(135deg,#C9B8EE,#A78BDE);color:#fff;
+  box-shadow:0 4px 12px rgba(167,139,222,.42);
+}
+
+.chips.sub-pick{padding:9px 0 0;gap:6px;flex-wrap:wrap;overflow:visible}
+.chips.sub-pick .chip{
+  font-size:12px;padding:6px 11px;background:#F4FBF8;color:#6BAA98;
+  box-shadow:0 1px 6px rgba(142,213,189,.18);
+}
+.chips.sub-pick.lv3 .chip{
+  background:#F5F2FC;color:#8E7AC9;
+  box-shadow:0 1px 6px rgba(174,155,224,.2);
+}
+.chips.sub-pick .chip:active{transform:scale(.95)}
+
+/* ★ 工具行，允许换行 */
+.toolrow{display:flex;gap:8px;padding:2px 0 4px;flex-wrap:wrap}
+.pill{
+  border:0;background:#FFF0F3;color:#E08A9B;font-size:12.5px;font-weight:600;
+  padding:7px 13px;border-radius:999px;transition:all .15s;
+}
+.pill.on{background:linear-gradient(135deg,#FFB3C1,#FF8FA8);color:#fff}
+
+/* ---------- 网格 ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:6px 16px 0}
+@media(min-width:520px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{
+  background:#fff;border-radius:18px;overflow:hidden;
+  box-shadow:0 3px 14px rgba(255,159,178,.14);transition:transform .12s;
+  position:relative;
+}
+.card:active{transform:scale(.965)}
+.thumb{position:relative;aspect-ratio:1/1;background:#FFF0F3;display:flex;align-items:center;justify-content:center}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.ph{font-size:34px;opacity:.45}
+.heart{position:absolute;top:6px;right:8px;font-size:13px;color:#FF7A94;text-shadow:0 0 6px #fff,0 0 3px #fff}
+.qty{position:absolute;bottom:6px;right:6px;background:rgba(74,64,72,.62);color:#fff;font-size:11px;padding:1px 7px;border-radius:999px}
+.cinfo{padding:8px 10px 10px}
+.cname{font-size:13.5px;font-weight:700;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmeta{font-size:11px;color:#B0A4AC;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ★ 已归档卡片：变灰 */
+.card.archived{
+  opacity:.72;
+}
+.card.archived .thumb img{
+  filter:grayscale(.9);
+  opacity:.5;
+}
+.card.archived .ph{opacity:.28}
+.card.archived .cname{color:#A699A0}
+.card.archived .cmeta{color:#C7BBC2}
+
+/* ★ 状态徽章（左上角） */
+.badge-status{
+  position:absolute;top:7px;left:8px;
+  font-size:10px;font-weight:800;letter-spacing:.4px;
+  padding:3px 8px;border-radius:7px;color:#fff;
+  box-shadow:0 2px 6px rgba(74,64,72,.16);
+  line-height:1;
+}
+.badge-status.sold{background:linear-gradient(135deg,#FFC08A,#FF9C60)}
+.badge-status.discarded{background:linear-gradient(135deg,#B8C2CF,#8F9DAC)}
+
+mark{
+  background:#FFE0E8;color:#E0768B;
+  padding:0 3px;border-radius:4px;font-weight:800;
+}
+.card.archived mark{background:#E8E2F2;color:#8C7FA8}
+
+.empty{grid-column:1/-1;text-align:center;padding:64px 20px;color:#C7BBC2}
+.empty .e1{font-size:52px;margin-bottom:14px;opacity:.75}
+.empty .e2{font-size:14px;line-height:1.8}
+.empty .e3{
+  display:inline-block;margin-top:16px;
+  border:0;background:#FFF0F3;color:#C08A98;
+  font-size:13px;font-weight:700;padding:11px 20px;border-radius:999px;
+}
+
+/* ---------- FAB ---------- */
+.fab{
+  position:fixed;bottom:26px;right:22px;width:58px;height:58px;border-radius:50%;border:0;
+  background:linear-gradient(135deg,#FFB3C1,#FF8FA8);color:#fff;font-size:28px;line-height:1;
+  box-shadow:0 8px 22px rgba(255,143,168,.45);z-index:30;transition:transform .15s;
+  display:flex;align-items:center;justify-content:center;padding-bottom:3px;
+}
+.fab:active{transform:scale(.92)}
+@media(min-width:600px){.fab{right:calc(50% - 280px + 22px)}}
+
+/* ---------- 弹层 ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(74,64,72,.34);backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  z-index:100;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+.sheet{
+  width:100%;max-width:560px;background:#FFFDFC;border-radius:26px 26px 0 0;
+  max-height:88vh;max-height:88dvh;
+  display:flex;flex-direction:column;
+  transform:translateY(40px);transition:transform .28s cubic-bezier(.2,.9,.3,1);
+  box-shadow:0 -8px 40px rgba(180,140,150,.18);
+  overflow:hidden;
+}
+.overlay.show .sheet{transform:translateY(0)}
+
+#sheetContent{
+  display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidden;
+}
+
+.sheet-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:18px 18px 12px;flex:0 0 auto;
+}
+.sheet-head h3{margin:0;font-size:16.5px;font-weight:800;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.x{border:0;background:#FFF0F3;color:#C7A0AA;width:28px;height:28px;border-radius:50%;font-size:12px;line-height:1;flex:0 0 auto}
+
+.sheet-body{
+  padding:2px 18px 14px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;flex:1 1 auto;min-height:0;
+}
+.sheet-foot{
+  display:flex;gap:10px;padding:12px 18px calc(16px + env(safe-area-inset-bottom));
+  border-top:1px solid #F7EDEF;background:#FFFDFC;flex:0 0 auto;
+  box-shadow:0 -6px 16px rgba(255,159,178,.08);
+}
+/* ★ 叠加的第二个 foot（用于状态操作），去掉 border-top */
+.sheet-foot.stacked{
+  border-top:0;
+  box-shadow:none;
+  padding-top:0;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom));
+}
+.sheet-foot.stacked + .sheet-foot.stacked{
+  padding-top:0;
+}
+.btn{flex:1;border:0;border-radius:14px;padding:14px;font-size:14.5px;font-weight:700;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,#FFB3C1,#FF8FA8);color:#fff;box-shadow:0 6px 16px rgba(255,143,168,.33)}
+.btn.ghost{background:#FFF0F3;color:#C08A98;flex:0 0 auto;padding-left:18px;padding-right:18px}
+.btn.ghost.danger{background:#FFF1F1;color:#E28399}
+.btn.sold{background:#FFF2E8;color:#C77830;flex:1}
+.btn.sold:active{background:#FFE8D6}
+.btn.discarded{background:#EDF0F4;color:#6C7A8A;flex:1}
+.btn.discarded:active{background:#E0E6ED}
+.btn.restore{background:linear-gradient(135deg,#B6E6D6,#7FD3B6);color:#fff;box-shadow:0 6px 16px rgba(127,211,182,.36);flex:1}
+
+/* ---------- 表单 ---------- */
+.photo-pick{
+  position:relative;width:100%;aspect-ratio:16/10;border-radius:16px;background:#FFF6F8;
+  border:2px dashed #FFD5DE;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;margin:4px 0 2px;
+}
+.photo-pick.has{border-style:solid;border-color:transparent}
+.photo-pick img{width:100%;height:100%;object-fit:cover;display:block}
+.pp-empty{text-align:center;color:#E0B7C2;font-size:13px}
+.pp-icon{font-size:28px;margin-bottom:6px}
+.photo-pick .rm{
+  position:absolute;top:8px;right:8px;border:0;width:28px;height:28px;border-radius:50%;
+  background:rgba(74,64,72,.5);color:#fff;font-size:12px;line-height:1;
+}
+.field{display:block;margin:14px 0}
+.field>span{display:block;font-size:12.5px;font-weight:700;color:#A8969E;margin-bottom:7px}
+.field input,.field textarea{
+  width:100%;border:1.5px solid #F5E9EC;background:#FFFBFB;border-radius:13px;
+  padding:12px 13px;font-size:14.5px;color:inherit;outline:0;transition:all .15s;
+  -webkit-appearance:none;appearance:none;
+}
+.field input:focus,.field textarea:focus{border-color:#FFB3C1;background:#fff;box-shadow:0 0 0 3px rgba(255,179,193,.15)}
+.field textarea{resize:vertical;min-height:76px;line-height:1.6}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.two .field{margin:0}
+
+.date-btn{
+  width:100%;border:1.5px solid #F5E9EC;background:#FFFBFB;border-radius:13px;
+  padding:12px 13px;font-size:14.5px;color:#4A4048;text-align:left;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  transition:all .15s;-webkit-appearance:none;appearance:none;
+}
+.date-btn:active{border-color:#FFB3C1;background:#fff;box-shadow:0 0 0 3px rgba(255,179,193,.15)}
+.date-btn .date-ic{font-size:15px;opacity:.55;flex:0 0 auto}
+.date-btn .txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.date-btn .txt.empty{color:#CFC3CA}
+
+.fav-toggle{
+  display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:#C08A98;
+  background:#FFF6F8;border-radius:14px;padding:14px;margin:6px 0 4px;
+}
+.fav-toggle input{width:19px;height:19px;accent-color:#FF8FA8;margin:0}
+
+/* ---------- 详情 ---------- */
+.detail-photo{width:100%;border-radius:18px;margin:4px 0 2px;display:block;max-height:320px;object-fit:cover}
+.ph-big{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;font-size:52px;background:#FFF6F8;opacity:.6}
+.info-list{background:#FFF8FA;border-radius:16px;padding:2px 14px;margin:14px 0}
+.info-row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid #FDEEF2;font-size:13.5px}
+.info-row:last-child{border-bottom:0}
+.info-row .k{color:#B0A4AC;flex:0 0 auto}
+.info-row .v{font-weight:600;text-align:right;word-break:break-word;min-width:0}
+.tag{display:inline-block;background:#EAF8F4;color:#4FB79A;font-size:12px;padding:5px 11px;border-radius:999px;margin:0 6px 6px 0;font-weight:600}
+.note-box{background:#FFFCF3;border-radius:14px;padding:13px 15px;font-size:13.5px;line-height:1.75;color:#8A7A6E;margin-bottom:14px}
+
+/* ★ 详情顶部状态提示 */
+.status-banner{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;border-radius:14px;margin:4px 0 10px;
+  font-size:13px;font-weight:700;
+}
+.status-banner.sold{background:#FFF2E8;color:#C77830}
+.status-banner.discarded{background:#EDF0F4;color:#6C7A8A}
+.status-banner .emo{font-size:18px}
+
+/* ---------- 菜单 / 统计 ---------- */
+.menu-list{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+.menu-item{
+  text-align:left;border:0;background:#FFF8FA;border-radius:14px;padding:15px 17px;
+  font-size:14.5px;color:#4A4048;font-weight:600;transition:background .15s;
+}
+.menu-item:active{background:#FFEFF3}
+.menu-item.danger{color:#E0768B}
+.hint{font-size:12px;color:#B0A4AC;line-height:1.7;margin:16px 2px 6px}
+
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 20px}
+.stat-card{background:#FFF6F8;border-radius:16px;padding:15px 6px;text-align:center}
+.stat-card .n{font-size:19px;font-weight:800;color:#FF8FA8;letter-spacing:-.3px}
+.stat-card .l{font-size:11.5px;color:#B0A4AC;margin-top:5px}
+/* ★ 状态统计卡片 */
+.status-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 20px}
+.status-cards .stat-card{background:#FFF8FA}
+.status-cards .stat-card.sold{background:#FFF6ED}
+.status-cards .stat-card.sold .n{color:#E09045}
+.status-cards .stat-card.discarded{background:#F1F3F6}
+.status-cards .stat-card.discarded .n{color:#8794A3}
+
+.bar-row{display:flex;align-items:center;gap:10px;margin:11px 0;font-size:13px}
+.bar-label{flex:0 0 96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:10px;background:#FFF0F3;border-radius:999px;overflow:hidden;min-width:0}
+.bar-fill{height:100%;background:linear-gradient(90deg,#FFD0DA,#FF9FB2);border-radius:999px;transition:width .4s}
+.bar-num{flex:0 0 24px;text-align:right;color:#B0A4AC;font-weight:600}
+.bar-fill.green{background:linear-gradient(90deg,#C9EDDF,#8ED5BD)}
+.bar-fill.purple{background:linear-gradient(90deg,#D8CCF2,#B49FE3)}
+
+/* ★ 大分类管理行 */
+.cat-manage{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.cat-manage-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:#FFF8FA;border-radius:14px;padding:10px 12px;font-size:14px;font-weight:600;
+}
+.cat-manage-row .cname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.cat-manage-row .btns{display:flex;gap:6px;align-items:center;flex:0 0 auto}
+.mini-btn{
+  border:0;background:#FFF0F3;color:#C08A98;
+  width:32px;height:32px;border-radius:10px;font-size:15px;font-weight:700;
+  line-height:1;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;padding:0;
+}
+.mini-btn:active{transform:scale(.92);background:#FFE0E8}
+.mini-btn:disabled{opacity:.28;pointer-events:none}
+.mini-btn.del{background:#FFF1F1;color:#E28399;font-size:12px}
+.mini-btn.del:active{background:#FFE0E6}
+.cat-manage-row .idx{
+  flex:0 0 auto;color:#C7BBC2;font-size:11.5px;font-weight:700;
+  background:#FFF0F3;border-radius:8px;padding:2px 7px;
+}
+
+/* ---------- 日期选择器 ---------- */
+.date-picker-overlay{
+  position:fixed;inset:0;background:rgba(74,64,72,.42);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  z-index:300;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.date-picker-overlay.show{opacity:1;pointer-events:auto}
+
+.date-picker{
+  width:100%;max-width:560px;background:#FFFDFC;
+  border-radius:26px 26px 0 0;
+  max-height:86vh;max-height:86dvh;
+  display:flex;flex-direction:column;
+  transform:translateY(40px);
+  transition:transform .28s cubic-bezier(.2,.9,.3,1);
+  box-shadow:0 -8px 40px rgba(180,140,150,.22);
+  overflow:hidden;
+}
+.date-picker-overlay.show .date-picker{transform:translateY(0)}
+
+.dp-body{
+  padding:2px 0 10px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;flex:1 1 auto;min-height:0;
+}
+.dp-section{padding:10px 0 4px}
+.dp-label{
+  font-size:12.5px;font-weight:700;color:#A8969E;
+  padding:0 18px 9px;letter-spacing:.3px;
+}
+.dp-grid{display:grid;gap:6px;padding:0 18px;}
+.dp-grid.years{grid-template-columns:repeat(5,1fr)}
+.dp-grid.months{grid-template-columns:repeat(6,1fr)}
+.dp-grid.days{grid-template-columns:repeat(7,1fr)}
+.dp-chip{
+  border:0;background:#FFF6F8;color:#8C8089;
+  font-size:13.5px;font-weight:600;
+  padding:10px 2px;border-radius:11px;
+  text-align:center;transition:all .14s;line-height:1;
+}
+.dp-chip:active{transform:scale(.94)}
+.dp-chip.on{
+  background:linear-gradient(135deg,#FFB3C1,#FF8FA8);color:#fff;
+  box-shadow:0 4px 12px rgba(255,143,168,.4);
+}
+.dp-chip.today-mark{position:relative}
+.dp-chip.today-mark::after{
+  content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:#FF8FA8;
+}
+.dp-chip.on.today-mark::after{background:#fff}
+
+.dp-foot{
+  padding:12px 18px calc(16px + env(safe-area-inset-bottom));
+  border-top:1px solid #F7EDEF;background:#FFFDFC;flex:0 0 auto;
+  box-shadow:0 -6px 16px rgba(255,159,178,.08);
+}
+.dp-preview-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:12px;
+}
+.dp-preview{
+  font-size:16px;font-weight:800;color:#FF8FA8;letter-spacing:.3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.dp-today{
+  border:0;background:#FFF0F3;color:#C08A98;
+  font-size:12px;font-weight:700;
+  padding:7px 13px;border-radius:999px;flex:0 0 auto;transition:all .15s;
+}
+.dp-today:active{background:#FFE0E8}
+.dp-btns{display:flex;gap:10px}
+
+/* ---------- 通用输入弹层 ---------- */
+.input-overlay{
+  position:fixed;inset:0;background:rgba(74,64,72,.42);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  z-index:350;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.input-overlay.show{opacity:1;pointer-events:auto}
+.input-sheet{
+  width:100%;max-width:560px;background:#FFFDFC;
+  border-radius:26px 26px 0 0;
+  display:flex;flex-direction:column;
+  transform:translateY(40px);
+  transition:transform .28s cubic-bezier(.2,.9,.3,1);
+  box-shadow:0 -8px 40px rgba(180,140,150,.22);
+  overflow:hidden;
+}
+.input-overlay.show .input-sheet{transform:translateY(0)}
+
+/* ---------- Toast ---------- */
+#toast{
+  position:fixed;left:50%;bottom:110px;transform:translate(-50%,16px);
+  background:rgba(74,64,72,.9);color:#fff;font-size:13.5px;font-weight:600;
+  padding:11px 20px;border-radius:999px;z-index:400;opacity:0;pointer-events:none;
+  transition:all .25s;white-space:nowrap;max-width:80vw;overflow:hidden;text-overflow:ellipsis;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="row1">
+      <h1>🧸 我的小仓库</h1>
+      <button class="icon-btn" id="menuBtn" title="更多">⋯</button>
+    </div>
+    <p class="sub" id="statsLine">加载中…</p>
+    <div class="searchbar">
+      <span class="ic">🔍</span>
+      <input id="searchInput" placeholder="搜名字、分类、标签、位置…" autocomplete="off" enterkeyhint="search">
+      <button id="clearSearch" hidden>✕</button>
+    </div>
+    <p class="search-hint" id="searchHint" hidden></p>
+    <div class="chips" id="catChips"></div>
+    <div class="chips subrow" id="subChips" hidden></div>
+    <div class="chips subrow lv3" id="sub2Chips" hidden></div>
+    <div class="toolrow">
+      <button class="pill" id="sortBtn">最新优先 ▾</button>
+      <button class="pill" id="favBtn">♡ 只看心头好</button>
+      <button class="pill" id="hideArchivedBtn">👁️ 隐藏已归档</button>
+    </div>
+  </header>
+
+  <main class="grid" id="grid"></main>
+  <button class="fab" id="addBtn" title="添加物品">＋</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheet">
+    <div id="sheetContent"></div>
+  </div>
+</div>
+
+<div class="date-picker-overlay" id="dateOverlay">
+  <div class="date-picker">
+    <div class="sheet-head">
+      <h3>选择购入时间</h3>
+      <button class="x" data-dp="close">✕</button>
+    </div>
+    <div class="dp-body" id="dpBody"></div>
+    <div class="dp-foot">
+      <div class="dp-preview-row">
+        <span class="dp-preview" id="dpPreview">—</span>
+        <button class="dp-today" data-dp="today">回到今天</button>
+      </div>
+      <div class="dp-btns">
+        <button class="btn ghost" data-dp="cancel">取消</button>
+        <button class="btn primary" data-dp="confirm">确认 ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="input-overlay" id="inputOverlay">
+  <div class="input-sheet">
+    <div class="sheet-head">
+      <h3 id="inputTitle">输入</h3>
+      <button class="x" data-ip="close">✕</button>
+    </div>
+    <div class="sheet-body" style="padding-bottom:6px">
+      <label class="field" style="margin:4px 0 6px">
+        <input id="inputField" placeholder="请输入" maxlength="20" autocomplete="off">
+      </label>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn ghost" data-ip="cancel">取消</button>
+      <button class="btn primary" data-ip="confirm">确定 ✓</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" accept="image/*" id="photoInput" hidden>
+<input type="file" accept="application/json,.json" id="importInput" hidden>
+<div id="toast"></div>
+
+<script>
+  
+/* PWA：动态生成应用清单 */
+(function(){
+  try {
+    const icon = "data:image/svg+xml," + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#FFB3C1"/><text x="256" y="340" font-size="280" text-anchor="middle">🧸</text></svg>`
+    );
+    const manifest = {
+      name: '我的小仓库',
+      short_name: '小仓库',
+      start_url: location.href,
+      scope: location.href.replace(/[^/]*$/, ''),
+      display: 'standalone',
+      orientation: 'portrait',
+      background_color: '#FFF7F4',
+      theme_color: '#FFF7F4',
+      icons: [
+        { src: icon, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const link = document.getElementById('manifest-link');
+    if (link) link.href = URL.createObjectURL(blob);
+  } catch (e) { console.warn('manifest 生成失败', e); }
+})();
+  
+/* ==================== 小工具 ==================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const pad = n => String(n).padStart(2, '0');
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+
+const NO_SUB = '__none__';
+const NO_SUB2 = '__none2__';
+const ARCHIVE_KEY = '__archive__';   /* ★ 归档分类的内部标识 */
+
+/* ★ 物品状态定义 */
+const STATUS = {
+  active:    { key: 'active',    label: '',        emoji: '' },
+  sold:      { key: 'sold',      label: '已出售',   emoji: '💰' },
+  discarded: { key: 'discarded', label: '已丢弃',   emoji: '🗑️' }
+};
+
+function statusOf(it) {
+  const s = it.status;
+  return (s === 'sold' || s === 'discarded') ? s : 'active';
+}
+function isArchived(it) {
+  return statusOf(it) !== 'active';
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 1900);
+}
+
+function highlightText(text, q) {
+  const str = String(text || '');
+  if (!q) return esc(str);
+  const lowerStr = str.toLowerCase();
+  const lowerQ = q.toLowerCase();
+  if (!lowerQ || lowerStr.indexOf(lowerQ) === -1) return esc(str);
+
+  let out = '';
+  let pos = 0;
+  let idx;
+  while ((idx = lowerStr.indexOf(lowerQ, pos)) !== -1) {
+    out += esc(str.slice(pos, idx));
+    out += '<mark>' + esc(str.slice(idx, idx + q.length)) + '</mark>';
+    pos = idx + q.length;
+  }
+  out += esc(str.slice(pos));
+  return out;
+}
+
+function isMatchAny(it, q) {
+  if (!q) return true;
+  const lq = q.toLowerCase();
+  return [
+    it.name || '',
+    it.big || '',
+    it.sub || '',
+    it.sub2 || '',
+    it.place || '',
+    it.location || '',
+    it.note || '',
+    (it.tags || []).join(' '),
+    String(it.price || '')
+  ].join(' ').toLowerCase().includes(lq);
+}
+
+/* ==================== 存储层 ==================== */
+const Store = (() => {
+  const LS_ITEMS = 'cuteStash.items';
+  const LS_SET = 'cuteStash.settings';
+  let db = null, useIDB = false;
+
+  function openDB() {
+    return new Promise((res, rej) => {
+      let req;
+      try { req = indexedDB.open('cuteStashDB', 1); } catch (e) { return rej(e); }
+      req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains('items')) d.createObjectStore('items', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('meta')) d.createObjectStore('meta');
+      };
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+      req.onblocked = () => rej(new Error('blocked'));
+    });
+  }
+
+  function run(storeName, mode, fn) {
+    return new Promise((res, rej) => {
+      const t = db.transaction(storeName, mode);
+      const req = fn(t.objectStore(storeName));
+      t.oncomplete = () => res(req ? req.result : undefined);
+      t.onerror = () => rej(t.error);
+      t.onabort = () => rej(t.error);
+    });
+  }
+
+  const lsRead = () => { try { return JSON.parse(localStorage.getItem(LS_ITEMS) || '[]'); } catch (e) { return []; } };
+  const lsWrite = arr => {
+    try { localStorage.setItem(LS_ITEMS, JSON.stringify(arr)); }
+    catch (e) { throw new Error('QUOTA'); }
+  };
+
+  return {
+    async init() {
+      try {
+        db = await openDB();
+        await run('items', 'readonly', s => s.getAll());
+        useIDB = true;
+      } catch (e) {
+        console.warn('IndexedDB 不可用，使用 localStorage', e);
+        useIDB = false;
+      }
+    },
+    get mode() { return useIDB ? 'idb' : 'ls'; },
+    async all() {
+      if (useIDB) return (await run('items', 'readonly', s => s.getAll())) || [];
+      return lsRead();
+    },
+    async put(item) {
+      if (useIDB) return run('items', 'readwrite', s => s.put(item));
+      const arr = lsRead();
+      const i = arr.findIndex(x => x.id === item.id);
+      if (i >= 0) arr[i] = item; else arr.push(item);
+      lsWrite(arr);
+    },
+    async remove(id) {
+      if (useIDB) return run('items', 'readwrite', s => s.delete(id));
+      lsWrite(lsRead().filter(x => x.id !== id));
+    },
+    async clear() {
+      if (useIDB) return run('items', 'readwrite', s => s.clear());
+      localStorage.removeItem(LS_ITEMS);
+    },
+    async bulkPut(list) {
+      if (useIDB) { for (const it of list) await run('items', 'readwrite', s => s.put(it)); return; }
+      const arr = lsRead();
+      list.forEach(it => {
+        const i = arr.findIndex(x => x.id === it.id);
+        if (i >= 0) arr[i] = it; else arr.push(it);
+      });
+      lsWrite(arr);
+    },
+    async getSetting(k, d) {
+      if (useIDB) { const v = await run('meta', 'readonly', s => s.get(k)); return v === undefined ? d : v; }
+      try { const o = JSON.parse(localStorage.getItem(LS_SET) || '{}'); return o[k] === undefined ? d : o[k]; } catch (e) { return d; }
+    },
+    async setSetting(k, v) {
+      if (useIDB) return run('meta', 'readwrite', s => s.put(v, k));
+      const o = JSON.parse(localStorage.getItem(LS_SET) || '{}');
+      o[k] = v;
+      localStorage.setItem(LS_SET, JSON.stringify(o));
+    }
+  };
+})();
+
+/* ==================== 图片压缩 ==================== */
+function compressImage(file, maxSide = 900, quality = 0.72) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        const scale = Math.min(1, maxSide / Math.max(w, h));
+        w = Math.max(1, Math.round(w * scale));
+        h = Math.max(1, Math.round(h * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('读取失败'));
+      img.src = reader.result;
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ==================== 状态 ==================== */
+const DEFAULT_CATS = ['纸袋', '杯套', '周边', '卡片', '徽章', '玩偶', '挂件', '立牌', '其他'];
+const CAT_EMOJI = {
+  '纸袋': '🛍️', '杯套': '🥤', '周边': '🎀', '卡片': '🃏', '徽章': '📛',
+  '玩偶': '🧸', '挂件': '🔑', '立牌': '🖼️', '海报': '📜', '其他': '✨'
+};
+const SORTS = [['new', '最新优先'], ['old', '最早优先'], ['name', '按名称'], ['price', '按价格']];
+
+let items = [];
+let settings = { bigCats: DEFAULT_CATS.slice() };
+let ui = {
+  q: '',
+  big: '全部', sub: '全部', sub2: '全部',
+  sort: 'new',
+  favOnly: false,
+  hideArchived: false    /* ★ 是否从普通列表隐藏已归档物品 */
+};
+let form = null;
+
+const emojiFor = it => CAT_EMOJI[it.big] || '🎁';
+const grid = $('#grid');
+const overlay = $('#overlay');
+const sheetContent = $('#sheetContent');
+
+/* ==================== 通用输入弹层 ==================== */
+let inputCallback = null;
+
+function askInput(title, placeholder, defaultValue, onConfirm) {
+  $('#inputTitle').textContent = title || '输入';
+  const field = $('#inputField');
+  field.value = defaultValue || '';
+  field.placeholder = placeholder || '请输入';
+  inputCallback = onConfirm || null;
+  $('#inputOverlay').classList.add('show');
+  setTimeout(() => { try { field.focus(); field.select(); } catch (e) {} }, 90);
+}
+
+function closeInput() {
+  $('#inputOverlay').classList.remove('show');
+  setTimeout(() => { inputCallback = null; }, 250);
+}
+
+function confirmInput() {
+  const v = $('#inputField').value.trim();
+  if (!v) { toast('内容不能为空哦'); return; }
+  const cb = inputCallback;
+  closeInput();
+  if (cb) cb(v);
+}
+
+function bindInputSheet() {
+  $('#inputOverlay').addEventListener('click', e => {
+    if (e.target === $('#inputOverlay')) { closeInput(); return; }
+    const t = e.target.closest('[data-ip]');
+    if (!t) return;
+    const act = t.dataset.ip;
+    if (act === 'close' || act === 'cancel') closeInput();
+    else if (act === 'confirm') confirmInput();
+  });
+  $('#inputField').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); confirmInput(); }
+    else if (e.key === 'Escape') closeInput();
+  });
+}
+
+/* ==================== 日期选择器 ==================== */
+let dpState = null;
+
+function fmtDateCN(iso) {
+  if (!iso) return '';
+  const p = iso.split('-');
+  if (p.length !== 3) return iso;
+  return `${+p[0]}年${+p[1]}月${+p[2]}日`;
+}
+
+function openDatePicker(initial, onConfirm) {
+  const now = new Date();
+  let y, m, d;
+  if (initial && /^\d{4}-\d{1,2}-\d{1,2}$/.test(initial)) {
+    const p = initial.split('-').map(Number);
+    y = p[0]; m = p[1]; d = p[2];
+  } else {
+    y = now.getFullYear(); m = now.getMonth() + 1; d = now.getDate();
+  }
+  dpState = { y, m, d, onConfirm };
+  renderDatePicker();
+  $('#dateOverlay').classList.add('show');
+}
+
+function closeDatePicker() {
+  $('#dateOverlay').classList.remove('show');
+  setTimeout(() => { if (!$('#dateOverlay').classList.contains('show')) dpState = null; }, 280);
+}
+
+function renderDatePicker() {
+  const st = dpState;
+  if (!st) return;
+
+  const curY = new Date().getFullYear();
+  const startY = Math.min(2000, curY - 5);
+  const endY = curY + 1;
+  const years = [];
+  for (let y = endY; y >= startY; y--) years.push(y);
+
+  const dim = new Date(st.y, st.m, 0).getDate();
+  if (st.d > dim) st.d = dim;
+
+  const now = new Date();
+  const ty = now.getFullYear(), tm = now.getMonth() + 1, td = now.getDate();
+
+  const yearsHTML = years.map(y =>
+    `<button type="button" class="dp-chip${y === st.y ? ' on' : ''}${y === ty ? ' today-mark' : ''}" data-dp-y="${y}">${y}</button>`
+  ).join('');
+
+  const monthsHTML = Array.from({ length: 12 }, (_, i) => i + 1).map(m =>
+    `<button type="button" class="dp-chip${m === st.m ? ' on' : ''}${(st.y === ty && m === tm) ? ' today-mark' : ''}" data-dp-m="${m}">${m}月</button>`
+  ).join('');
+
+  const daysHTML = Array.from({ length: dim }, (_, i) => i + 1).map(d =>
+    `<button type="button" class="dp-chip${d === st.d ? ' on' : ''}${(st.y === ty && st.m === tm && d === td) ? ' today-mark' : ''}" data-dp-d="${d}">${d}</button>`
+  ).join('');
+
+  $('#dpBody').innerHTML = `
+    <div class="dp-section">
+      <div class="dp-label">① 选年份</div>
+      <div class="dp-grid years">${yearsHTML}</div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-label">② 选月份</div>
+      <div class="dp-grid months">${monthsHTML}</div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-label">③ 选日期</div>
+      <div class="dp-grid days">${daysHTML}</div>
+    </div>
+  `;
+
+  $('#dpPreview').textContent = `${st.y}年${st.m}月${st.d}日`;
+}
+
+function bindDatePicker() {
+  const dpBody = $('#dpBody');
+  const dpOverlay = $('#dateOverlay');
+
+  dpBody.addEventListener('click', e => {
+    const t = e.target.closest('.dp-chip');
+    if (!t || !dpState) return;
+    if (t.dataset.dpY !== undefined) dpState.y = +t.dataset.dpY;
+    else if (t.dataset.dpM !== undefined) dpState.m = +t.dataset.dpM;
+    else if (t.dataset.dpD !== undefined) dpState.d = +t.dataset.dpD;
+    renderDatePicker();
+  });
+
+  dpOverlay.addEventListener('click', e => {
+    if (e.target === dpOverlay) { closeDatePicker(); return; }
+    const t = e.target.closest('[data-dp]');
+    if (!t || !dpState) return;
+    const act = t.dataset.dp;
+
+    if (act === 'close' || act === 'cancel') {
+      closeDatePicker();
+    } else if (act === 'today') {
+      const now = new Date();
+      dpState.y = now.getFullYear();
+      dpState.m = now.getMonth() + 1;
+      dpState.d = now.getDate();
+      renderDatePicker();
+    } else if (act === 'confirm') {
+      const val = `${dpState.y}-${pad(dpState.m)}-${pad(dpState.d)}`;
+      const cb = dpState.onConfirm;
+      closeDatePicker();
+      if (cb) cb(val);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && $('#dateOverlay').classList.contains('show')) closeDatePicker();
+  });
+}
+
+/* ==================== 渲染 ==================== */
+function bigCatList() {
+  return [...new Set((settings.bigCats || []).filter(Boolean))];
+}
+
+function baseItems() {
+  if (ui.q) return items.filter(i => isMatchAny(i, ui.q));
+  return items.slice();
+}
+
+function render() {
+  renderChips();
+  renderGrid();
+  updateStats();
+}
+
+function updateStats() {
+  const n = items.length;
+  const activeN = items.filter(i => !isArchived(i)).length;
+  const total = items.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+  $('#statsLine').textContent = n
+    ? `共 ${n} 件${activeN !== n ? `（在用 ${activeN}）` : ''} · 总花费 ¥${total.toFixed(0)}`
+    : '还没有收藏，点右下角 ＋ 添加第一件吧～';
+}
+
+/* ★ 分类行：加入归档入口 */
+function renderChips() {
+  const base = baseItems();
+  const isSearch = !!ui.q;
+
+  const counts = {};
+  base.forEach(i => { const k = i.big || '未分类'; counts[k] = (counts[k] || 0) + 1; });
+
+  const archivedCount = base.filter(isArchived).length;
+
+  const cats = bigCatList();
+  let html = `<button class="chip ${ui.big === '全部' ? 'on' : ''}" data-cat="全部">全部 ${base.length}</button>`;
+
+  /* 归档入口：有归档物品或当前就在归档视图时显示 */
+  if (archivedCount > 0 || ui.big === ARCHIVE_KEY) {
+    html += `<button class="chip archive ${ui.big === ARCHIVE_KEY ? 'on' : ''}" data-cat="${ARCHIVE_KEY}">📦 已归档 ${archivedCount}</button>`;
+  }
+
+  cats.forEach(c => {
+    const n = counts[c] || 0;
+    if (isSearch && n === 0 && ui.big !== c) return;
+    html += `<button class="chip ${ui.big === c ? 'on' : ''}" data-cat="${esc(c)}">${esc(c)} ${n}</button>`;
+  });
+  Object.keys(counts).forEach(c => {
+    if (!cats.includes(c)) {
+      html += `<button class="chip ${ui.big === c ? 'on' : ''}" data-cat="${esc(c)}">${esc(c)} ${counts[c]}</button>`;
+    }
+  });
+  $('#catChips').innerHTML = html;
+
+  renderSubChips();
+}
+
+function renderSubChips() {
+  const el = $('#subChips');
+  /* 归档视图不显示二级 */
+  if (ui.big === '全部' || ui.big === ARCHIVE_KEY) {
+    el.hidden = true;
+    el.innerHTML = '';
+    renderSub2Chips();
+    return;
+  }
+  const base = baseItems();
+  const pool = base.filter(i => (i.big || '未分类') === ui.big);
+  const counts = {};
+  let noSubCount = 0;
+  pool.forEach(i => {
+    const s = (i.sub || '').trim();
+    if (s) counts[s] = (counts[s] || 0) + 1;
+    else noSubCount++;
+  });
+  const subs = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, 'zh'));
+
+  if (!subs.length && !noSubCount) {
+    el.hidden = true;
+    el.innerHTML = '';
+    renderSub2Chips();
+    return;
+  }
+
+  el.hidden = false;
+  let html = `<button class="chip ${ui.sub === '全部' ? 'on' : ''}" data-sub="全部">全部 ${pool.length}</button>`;
+  subs.forEach(s => {
+    html += `<button class="chip ${ui.sub === s ? 'on' : ''}" data-sub="${esc(s)}">${esc(s)} ${counts[s]}</button>`;
+  });
+  if (noSubCount) {
+    html += `<button class="chip ${ui.sub === NO_SUB ? 'on' : ''}" data-sub="${NO_SUB}">未填二级 ${noSubCount}</button>`;
+  }
+  el.innerHTML = html;
+  renderSub2Chips();
+}
+
+function renderSub2Chips() {
+  const el = $('#sub2Chips');
+  if (ui.big === '全部' || ui.big === ARCHIVE_KEY || ui.sub === '全部' || ui.sub === NO_SUB) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+  const base = baseItems();
+  const pool = base.filter(i =>
+    (i.big || '未分类') === ui.big && (i.sub || '').trim() === ui.sub
+  );
+  const counts = {};
+  let noSub2Count = 0;
+  pool.forEach(i => {
+    const s = (i.sub2 || '').trim();
+    if (s) counts[s] = (counts[s] || 0) + 1;
+    else noSub2Count++;
+  });
+  const subs2 = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, 'zh'));
+
+  if (!subs2.length && !noSub2Count) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+
+  el.hidden = false;
+  let html = `<button class="chip ${ui.sub2 === '全部' ? 'on' : ''}" data-sub2="全部">全部 ${pool.length}</button>`;
+  subs2.forEach(s => {
+    html += `<button class="chip ${ui.sub2 === s ? 'on' : ''}" data-sub2="${esc(s)}">${esc(s)} ${counts[s]}</button>`;
+  });
+  if (noSub2Count) {
+    html += `<button class="chip ${ui.sub2 === NO_SUB2 ? 'on' : ''}" data-sub2="${NO_SUB2}">未填三级 ${noSub2Count}</button>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ★ 筛选逻辑，加入归档与隐藏开关 */
+function visibleItems() {
+  let arr = baseItems();
+
+  if (ui.big === ARCHIVE_KEY) {
+    /* 归档视图：只看已出售/丢弃 */
+    arr = arr.filter(isArchived);
+  } else if (ui.big === '全部') {
+    /* 全部：如果开启隐藏，排除归档 */
+    if (ui.hideArchived) arr = arr.filter(i => !isArchived(i));
+  } else {
+    /* 具体分类 */
+    arr = arr.filter(i => (i.big || '未分类') === ui.big);
+    if (ui.hideArchived) arr = arr.filter(i => !isArchived(i));
+
+    if (ui.sub === NO_SUB) {
+      arr = arr.filter(i => !(i.sub || '').trim());
+    } else if (ui.sub !== '全部') {
+      arr = arr.filter(i => (i.sub || '').trim() === ui.sub);
+      if (ui.sub2 === NO_SUB2) {
+        arr = arr.filter(i => !(i.sub2 || '').trim());
+      } else if (ui.sub2 !== '全部') {
+        arr = arr.filter(i => (i.sub2 || '').trim() === ui.sub2);
+      }
+    }
+  }
+
+  if (ui.favOnly) arr = arr.filter(i => i.fav);
+
+  const s = ui.sort;
+  arr.sort((a, b) => {
+    if (s === 'new') return (b.date || '').localeCompare(a.date || '') || ((b.created || 0) - (a.created || 0));
+    if (s === 'old') return (a.date || 'zzzz').localeCompare(b.date || 'zzzz');
+    if (s === 'name') return String(a.name).localeCompare(String(b.name), 'zh');
+    if (s === 'price') return (b.price || 0) - (a.price || 0);
+    return 0;
+  });
+  return arr;
+}
+
+function cardHTML(it) {
+  const archived = isArchived(it);
+  const st = statusOf(it);
+
+  const img = it.photo
+    ? `<img src="${it.photo}" loading="lazy" alt="">`
+    : `<div class="ph">${emojiFor(it)}</div>`;
+  const heart = it.fav ? `<span class="heart">♥</span>` : '';
+  const qty = (it.qty || 1) > 1 ? `<span class="qty">×${it.qty}</span>` : '';
+
+  /* 状态徽章 */
+  let badge = '';
+  if (st === 'sold') badge = `<span class="badge-status sold">💰 已售</span>`;
+  else if (st === 'discarded') badge = `<span class="badge-status discarded">🗑️ 已丢</span>`;
+
+  const metaParts = [];
+  if (it.sub2) metaParts.push(it.sub2);
+  if (it.sub) metaParts.push(it.sub);
+  if (!metaParts.length && it.big) metaParts.push(it.big);
+  if (it.date) metaParts.push(it.date.slice(0, 7));
+  const meta = metaParts.join(' · ');
+
+  const nameHTML = highlightText(it.name, ui.q);
+
+  return `<div class="card${archived ? ' archived' : ''}" data-id="${it.id}">
+    <div class="thumb">${img}${badge}${heart}${qty}</div>
+    <div class="cinfo">
+      <div class="cname">${nameHTML}</div>
+      <div class="cmeta">${esc(meta)}</div>
+    </div>
+  </div>`;
+}
+
+function updateSearchHint(count) {
+  const el = $('#searchHint');
+  if (!ui.q) {
+    el.hidden = true;
+    el.innerHTML = '';
+    el.classList.remove('empty-hint');
+    return;
+  }
+  el.hidden = false;
+  const baseN = baseItems().length;
+  if (count === 0) {
+    el.classList.add('empty-hint');
+    if (baseN === 0) {
+      el.innerHTML = `没有找到包含「<b>${esc(ui.q)}</b>」的宝贝，换个关键词试试～`;
+    } else {
+      el.innerHTML = `当前筛选下没有结果<br>（共 <b>${baseN}</b> 件包含「${esc(ui.q)}」的宝贝）`;
+    }
+  } else {
+    el.classList.remove('empty-hint');
+    el.innerHTML = `找到 <span class="num">${count}</span> 件包含「<b>${esc(ui.q)}</b>」的宝贝`;
+  }
+}
+
+function renderGrid() {
+  const arr = visibleItems();
+  updateSearchHint(arr.length);
+
+  if (!arr.length) {
+    const isFiltering = ui.q || ui.big !== '全部' || ui.favOnly || ui.hideArchived;
+    const e1 = '🔍';
+    let e2;
+    let actionBtn = '';
+
+    if (ui.big === ARCHIVE_KEY && !ui.q) {
+      e2 = '归档里还没有物品<br>在物品详情里可以标记「出售」或「丢弃」';
+    } else if (ui.q && baseItems().length > 0) {
+      e2 = '当前筛选下没有匹配的宝贝<br>试试点上面的「全部」看看所有结果';
+      actionBtn = `<button class="e3" data-empty-act="resetFilter">查看全部 ${baseItems().length} 件匹配</button>`;
+    } else if (ui.q) {
+      e2 = '没有找到匹配的宝贝<br>试试换个关键词？';
+    } else if (ui.hideArchived) {
+      e2 = '当前隐藏了已归档的物品<br>可以关闭「隐藏已归档」看看';
+      actionBtn = `<button class="e3" data-empty-act="showArchived">显示已归档物品</button>`;
+    } else if (isFiltering) {
+      e2 = '没有找到符合条件的宝贝<br>换个关键词试试？';
+    } else {
+      e2 = '仓库还空空的呢<br>点右下角的 ＋ 收藏第一件吧';
+    }
+
+    grid.innerHTML = `<div class="empty">
+      <div class="e1">${e1}</div>
+      <div class="e2">${e2}</div>
+      ${actionBtn}
+    </div>`;
+    return;
+  }
+  grid.innerHTML = arr.map(cardHTML).join('');
+}
+
+/* ==================== 弹层 ==================== */
+function openSheet(html) {
+  sheetContent.innerHTML = html;
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  if (window.__kbAdjust) setTimeout(window.__kbAdjust, 60);
+}
+function closeSheet() {
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+  const sheet = $('#sheet');
+  if (sheet) { sheet.style.marginBottom = ''; sheet.style.maxHeight = ''; }
+  setTimeout(() => { if (!overlay.classList.contains('show')) sheetContent.innerHTML = ''; }, 260);
+}
+
+/* ==================== 详情 ==================== */
+function openDetail(id) {
+  const it = items.find(x => x.id === id);
+  if (!it) return;
+  const st = statusOf(it);
+  const archived = st !== 'active';
+
+  const rows = [
+    ['大分类', it.big],
+    ['二级分类', it.sub],
+    ['三级分类', it.sub2],
+    ['购入时间', it.date ? fmtDateCN(it.date) : ''],
+    ['价格', it.price ? '¥' + it.price : ''],
+    ['数量', (it.qty || 1) > 1 ? it.qty + ' 个' : ''],
+    ['购入渠道', it.place],
+    ['存放位置', it.location],
+  ].filter(r => r[1]);
+
+  /* 状态横幅 */
+  let statusBanner = '';
+  if (st === 'sold') {
+    statusBanner = `<div class="status-banner sold"><span class="emo">💰</span><span>这件宝贝已标记为「已出售」</span></div>`;
+  } else if (st === 'discarded') {
+    statusBanner = `<div class="status-banner discarded"><span class="emo">🗑️</span><span>这件宝贝已标记为「已丢弃」</span></div>`;
+  }
+
+  const footHTML = archived
+    ? `
+      <div class="sheet-foot">
+        <button class="btn ghost danger" data-act="delete" data-id="${it.id}">永久删除</button>
+        <button class="btn ghost" data-act="edit" data-id="${it.id}">编辑</button>
+        <button class="btn primary" data-act="close">关闭</button>
+      </div>
+      <div class="sheet-foot stacked">
+        <button class="btn restore" data-act="restore" data-id="${it.id}">↩️ 恢复为在用</button>
+      </div>
+    `
+    : `
+      <div class="sheet-foot">
+        <button class="btn ghost danger" data-act="delete" data-id="${it.id}">删除</button>
+        <button class="btn ghost" data-act="edit" data-id="${it.id}">编辑</button>
+        <button class="btn primary" data-act="fav" data-id="${it.id}">${it.fav ? '♥ 已收藏' : '♡ 收藏'}</button>
+      </div>
+      <div class="sheet-foot stacked">
+        <button class="btn sold" data-act="markSold" data-id="${it.id}">💰 标记出售</button>
+        <button class="btn discarded" data-act="markDiscarded" data-id="${it.id}">🗑️ 标记丢弃</button>
+      </div>
+    `;
+
+  openSheet(`
+    <div class="sheet-head">
+      <h3>${esc(it.name)}</h3>
+      <button class="x" data-act="close">✕</button>
+    </div>
+    <div class="sheet-body">
+      ${statusBanner}
+      ${it.photo
+        ? `<img class="detail-photo" src="${it.photo}" alt="" style="${archived ? 'filter:grayscale(.85);opacity:.62' : ''}">`
+        : `<div class="detail-photo ph-big">${emojiFor(it)}</div>`}
+      ${rows.length ? `<div class="info-list">${rows.map(([k, v]) =>
+        `<div class="info-row"><span class="k">${k}</span><span class="v">${esc(v)}</span></div>`).join('')}</div>` : ''}
+      ${(it.tags || []).length ? `<div style="margin-bottom:12px">${it.tags.map(t => `<span class="tag">#${esc(t)}</span>`).join('')}</div>` : ''}
+      ${it.note ? `<div class="note-box">${esc(it.note).replace(/\n/g, '<br>')}</div>` : ''}
+    </div>
+    ${footHTML}
+  `);
+}
+
+/* ==================== 编辑表单 ==================== */
+function openEdit(id) {
+  const it = id ? items.find(x => x.id === id) : null;
+  form = it ? JSON.parse(JSON.stringify(it)) : {
+    id: null, name: '', big: '', sub: '', sub2: '', date: todayStr(), price: '', place: '',
+    location: '', qty: 1, tags: [], note: '', photo: '', fav: false, status: 'active'
+  };
+  if (form.sub2 === undefined) form.sub2 = '';
+  if (!form.status) form.status = 'active';
+
+  const locOptions = [...new Set(items.map(i => i.location).filter(Boolean))]
+    .map(s => `<option value="${esc(s)}"></option>`).join('');
+
+  openSheet(`
+    <div class="sheet-head">
+      <h3>${it ? '编辑物品' : '添加物品'}</h3>
+      <button class="x" data-act="close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="photo-pick" id="photoPick" data-act="pickPhoto"></div>
+
+      <label class="field"><span>名称 *</span>
+        <input id="f-name" placeholder="给它起个名字" value="${esc(form.name)}" maxlength="40">
+      </label>
+
+      <div class="field"><span>大分类（自己管理）</span>
+        <div class="chips small" id="f-big"></div>
+      </div>
+
+      <div class="field"><span>二级分类（作品 / 角色）</span>
+        <input id="f-sub" placeholder="直接输入，或点下方标签填入" value="${esc(form.sub)}" autocomplete="off">
+        <div class="chips sub-pick" id="f-sub-picks" hidden></div>
+      </div>
+
+      <div class="field"><span>三级分类（款式 / 版本）</span>
+        <input id="f-sub2" placeholder="直接输入，或点下方标签填入" value="${esc(form.sub2)}" autocomplete="off">
+        <div class="chips sub-pick lv3" id="f-sub2-picks" hidden></div>
+      </div>
+
+      <div class="two">
+        <div class="field"><span>购入时间</span>
+          <button type="button" class="date-btn" data-act="pickDate">
+            <span class="txt" id="f-date-text"></span>
+            <span class="date-ic">📅</span>
+          </button>
+        </div>
+        <label class="field"><span>价格 ¥</span>
+          <input type="number" inputmode="decimal" id="f-price" placeholder="0" value="${form.price || ''}">
+        </label>
+      </div>
+
+      <div class="two">
+        <label class="field"><span>数量</span>
+          <input type="number" inputmode="numeric" id="f-qty" value="${form.qty || 1}">
+        </label>
+        <label class="field"><span>购入渠道</span>
+          <input id="f-place" placeholder="淘宝 / 线下 / 朋友送" value="${esc(form.place || '')}">
+        </label>
+      </div>
+
+      <label class="field"><span>存放位置</span>
+        <input id="f-location" placeholder="例如：书桌第二层抽屉" value="${esc(form.location || '')}" list="locList">
+      </label>
+      <datalist id="locList">${locOptions}</datalist>
+
+      <label class="field"><span>标签（空格或逗号分开）</span>
+        <input id="f-tags" placeholder="可爱 限定 蓝色" value="${esc((form.tags || []).join(' '))}">
+      </label>
+
+      <label class="field"><span>备注</span>
+        <textarea id="f-note" placeholder="想记点什么…">${esc(form.note || '')}</textarea>
+      </label>
+
+      <label class="fav-toggle">
+        <input type="checkbox" id="f-fav" ${form.fav ? 'checked' : ''}>
+        <span>标记为心头好 ♥</span>
+      </label>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn ghost" data-act="close">取消</button>
+      <button class="btn primary" data-act="save">保存 ✓</button>
+    </div>
+  `);
+
+  renderPhoto();
+  renderBigChips();
+  renderSubPicks();
+  updateDateBtn();
+}
+
+function updateDateBtn() {
+  const el = document.getElementById('f-date-text');
+  if (!el) return;
+  if (form && form.date) {
+    el.textContent = fmtDateCN(form.date);
+    el.classList.remove('empty');
+  } else {
+    el.textContent = '点击选择日期';
+    el.classList.add('empty');
+  }
+}
+
+function renderPhoto() {
+  const el = document.getElementById('photoPick');
+  if (!el) return;
+  if (form.photo) {
+    el.classList.add('has');
+    el.innerHTML = `<img src="${form.photo}" alt="">
+      <button class="rm" data-act="removePhoto" type="button">✕</button>`;
+  } else {
+    el.classList.remove('has');
+    el.innerHTML = `<div class="pp-empty"><div class="pp-icon">📷</div>点这里加张照片</div>`;
+  }
+}
+
+function renderBigChips() {
+  const el = document.getElementById('f-big');
+  if (!el) return;
+  const list = bigCatList();
+  if (form.big && !list.includes(form.big)) list.push(form.big);
+  el.innerHTML = list.map(c =>
+    `<button type="button" class="chip ${form.big === c ? 'on' : ''}" data-act="setBig" data-id="${esc(c)}">${esc(c)}</button>`
+  ).join('') + `<button type="button" class="chip" data-act="newBig">＋ 新建</button>`;
+}
+
+function renderSubPicks() {
+  const el1 = document.getElementById('f-sub-picks');
+  if (el1) {
+    let pool = items;
+    if (form.big) pool = pool.filter(i => (i.big || '未分类') === form.big);
+    const cur = (form.sub || '').trim();
+    const subs = [...new Set(pool.map(i => (i.sub || '').trim()).filter(Boolean))]
+      .filter(s => s !== cur)
+      .sort((a, b) => a.localeCompare(b, 'zh'))
+      .slice(0, 12);
+    if (subs.length) {
+      el1.innerHTML = subs.map(s =>
+        `<button type="button" class="chip" data-act="setSub" data-id="${esc(s)}">${esc(s)}</button>`
+      ).join('');
+      el1.hidden = false;
+    } else {
+      el1.innerHTML = '';
+      el1.hidden = true;
+    }
+  }
+
+  const el2 = document.getElementById('f-sub2-picks');
+  if (el2) {
+    const subInput = document.getElementById('f-sub');
+    const subVal = (subInput ? subInput.value : (form.sub || '')).trim();
+    if (!subVal) {
+      el2.innerHTML = '';
+      el2.hidden = true;
+      return;
+    }
+    let pool = items;
+    if (form.big) pool = pool.filter(i => (i.big || '未分类') === form.big);
+    pool = pool.filter(i => (i.sub || '').trim() === subVal);
+    const cur2 = (form.sub2 || '').trim();
+    const subs2 = [...new Set(pool.map(i => (i.sub2 || '').trim()).filter(Boolean))]
+      .filter(s => s !== cur2)
+      .sort((a, b) => a.localeCompare(b, 'zh'))
+      .slice(0, 12);
+    if (subs2.length) {
+      el2.innerHTML = subs2.map(s =>
+        `<button type="button" class="chip" data-act="setSub2" data-id="${esc(s)}">${esc(s)}</button>`
+      ).join('');
+      el2.hidden = false;
+    } else {
+      el2.innerHTML = '';
+      el2.hidden = true;
+    }
+  }
+}
+
+/* ==================== 增删改 ==================== */
+async function saveItem() {
+  const name = ($('#f-name').value || '').trim();
+  if (!name) { toast('先给它起个名字吧～'); $('#f-name').focus(); return; }
+
+  const obj = {
+    id: form.id || uid(),
+    name,
+    big: form.big || '未分类',
+    sub: ($('#f-sub').value || '').trim(),
+    sub2: ($('#f-sub2').value || '').trim(),
+    date: form.date || '',
+    price: parseFloat($('#f-price').value) || 0,
+    place: ($('#f-place').value || '').trim(),
+    location: ($('#f-location').value || '').trim(),
+    qty: Math.max(1, parseInt($('#f-qty').value) || 1),
+    tags: ($('#f-tags').value || '').split(/[,，\s]+/).filter(Boolean).slice(0, 10),
+    note: ($('#f-note').value || '').trim(),
+    photo: form.photo || '',
+    fav: $('#f-fav').checked,
+    status: form.status || 'active',   /* ★ 保留状态 */
+    created: form.created || Date.now(),
+    updated: Date.now()
+  };
+
+  try {
+    await Store.put(obj);
+  } catch (e) {
+    toast('存储空间满了 😢 建议先导出备份再清理');
+    return;
+  }
+
+  const i = items.findIndex(x => x.id === obj.id);
+  if (i >= 0) items[i] = obj; else items.unshift(obj);
+
+  if (obj.big && obj.big !== '未分类' && !settings.bigCats.includes(obj.big)) {
+    settings.bigCats.push(obj.big);
+    Store.setSetting('bigCats', settings.bigCats);
+  }
+
+  closeSheet();
+  render();
+  toast('已保存 ✓');
+}
+
+async function deleteItem(id) {
+  const it = items.find(x => x.id === id);
+  const isArch = it && isArchived(it);
+  const msg = isArch
+    ? '确定要永久删除它吗？删了就找不回来啦～'
+    : '确定要删掉它吗？删了就找不回来啦～\n（如果想保留记录，可以用「标记出售/丢弃」）';
+  if (!confirm(msg)) return;
+  await Store.remove(id);
+  items = items.filter(x => x.id !== id);
+  closeSheet();
+  render();
+  toast('已删除');
+}
+
+async function toggleFav(id) {
+  const it = items.find(x => x.id === id);
+  if (!it) return;
+  it.fav = !it.fav;
+  await Store.put(it);
+  openDetail(id);
+  render();
+}
+
+/* ★ 标记状态 */
+async function setStatus(id, status) {
+  const it = items.find(x => x.id === id);
+  if (!it) return;
+  it.status = status;
+  it.updated = Date.now();
+  await Store.put(it);
+  render();
+  openDetail(id);
+  if (status === 'sold') toast('已标记为出售 💰');
+  else if (status === 'discarded') toast('已标记为丢弃 🗑️');
+  else toast('已恢复为在用 ✓');
+}
+
+function newBigCat() {
+  askInput('新增大分类', '例如：吧唧、色纸、明信片', '', async name => {
+    const clean = name.slice(0, 12);
+    if (!settings.bigCats.includes(clean)) {
+      settings.bigCats.push(clean);
+      await Store.setSetting('bigCats', settings.bigCats);
+    }
+    form.big = clean;
+    if (document.getElementById('f-big')) {
+      renderBigChips();
+      renderSubPicks();
+    }
+    render();
+    toast(`已新建分类「${clean}」`);
+  });
+}
+
+/* ==================== 菜单 / 统计 / 备份 ==================== */
+function openMenu() {
+  openSheet(`
+    <div class="sheet-head"><h3>更多</h3><button class="x" data-act="close">✕</button></div>
+    <div class="sheet-body">
+      <div class="menu-list">
+        <button class="menu-item" data-act="menu" data-id="stats">📊 统计一下</button>
+        <button class="menu-item" data-act="menu" data-id="cats">🏷️ 管理大分类</button>
+        <button class="menu-item" data-act="menu" data-id="export">💾 导出备份</button>
+        <button class="menu-item" data-act="menu" data-id="import">📥 导入备份</button>
+        <button class="menu-item danger" data-act="menu" data-id="clear">🗑️ 清空全部数据</button>
+      </div>
+      <p class="hint">所有数据都存在你自己的设备上，不会上传到任何服务器。<br>换手机或清理浏览器前，记得先「导出备份」哦～</p>
+    </div>
+  `);
+}
+
+function showStats() {
+  const n = items.length;
+  const activeItems = items.filter(i => statusOf(i) === 'active');
+  const soldItems = items.filter(i => statusOf(i) === 'sold');
+  const discardedItems = items.filter(i => statusOf(i) === 'discarded');
+
+  const totalPrice = items.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+  const activePrice = activeItems.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+
+  /* 大分类统计（仅 active） */
+  const bigCounts = {};
+  activeItems.forEach(i => { const k = i.big || '未分类'; bigCounts[k] = (bigCounts[k] || 0) + 1; });
+  const bigEntries = Object.entries(bigCounts).sort((a, b) => b[1] - a[1]);
+  const bigMax = Math.max(1, ...Object.values(bigCounts));
+
+  const subCounts = {};
+  activeItems.forEach(i => {
+    const s = (i.sub || '').trim();
+    if (s) subCounts[s] = (subCounts[s] || 0) + 1;
+  });
+  const subEntries = Object.entries(subCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const subMax = Math.max(1, ...Object.values(subCounts));
+
+  const sub2Counts = {};
+  activeItems.forEach(i => {
+    const s = (i.sub2 || '').trim();
+    if (s) sub2Counts[s] = (sub2Counts[s] || 0) + 1;
+  });
+  const sub2Entries = Object.entries(sub2Counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const sub2Max = Math.max(1, ...Object.values(sub2Counts));
+
+  const bigBars = bigEntries.map(([k, v]) => `
+    <div class="bar-row">
+      <span class="bar-label">${emojiFor({ big: k })} ${esc(k)}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v / bigMax * 100).toFixed(1)}%"></div></div>
+      <span class="bar-num">${v}</span>
+    </div>`).join('');
+
+  const subBars = subEntries.map(([k, v]) => `
+    <div class="bar-row">
+      <span class="bar-label">${esc(k)}</span>
+      <div class="bar-track"><div class="bar-fill green" style="width:${(v / subMax * 100).toFixed(1)}%"></div></div>
+      <span class="bar-num">${v}</span>
+    </div>`).join('');
+
+  const sub2Bars = sub2Entries.map(([k, v]) => `
+    <div class="bar-row">
+      <span class="bar-label">${esc(k)}</span>
+      <div class="bar-track"><div class="bar-fill purple" style="width:${(v / sub2Max * 100).toFixed(1)}%"></div></div>
+      <span class="bar-num">${v}</span>
+    </div>`).join('');
+
+  openSheet(`
+    <div class="sheet-head"><h3>📊 我的仓库</h3><button class="x" data-act="close">✕</button></div>
+    <div class="sheet-body">
+      <div class="stat-cards">
+        <div class="stat-card"><div class="n">${n}</div><div class="l">件物品</div></div>
+        <div class="stat-card"><div class="n">¥${totalPrice.toFixed(0)}</div><div class="l">总花费</div></div>
+        <div class="stat-card"><div class="n">${bigEntries.length}</div><div class="l">个大分类</div></div>
+      </div>
+      <div class="status-cards">
+        <div class="stat-card"><div class="n">${activeItems.length}</div><div class="l">在用 · ¥${activePrice.toFixed(0)}</div></div>
+        <div class="stat-card sold"><div class="n">${soldItems.length}</div><div class="l">已出售</div></div>
+        <div class="stat-card discarded"><div class="n">${discardedItems.length}</div><div class="l">已丢弃</div></div>
+      </div>
+      ${bigEntries.length ? `<p class="hint" style="margin:0 0 4px">大分类（在用物品）</p>${bigBars}` : '<p class="hint">还没有在用的物品～</p>'}
+      ${subEntries.length ? `<p class="hint" style="margin:20px 0 4px">二级分类 Top ${subEntries.length}</p>${subBars}` : ''}
+      ${sub2Entries.length ? `<p class="hint" style="margin:20px 0 4px">三级分类 Top ${sub2Entries.length}</p>${sub2Bars}` : ''}
+      <div style="height:12px"></div>
+    </div>
+  `);
+}
+
+function manageCats() {
+  const cats = bigCatList();
+  openSheet(`
+    <div class="sheet-head"><h3>管理大分类</h3><button class="x" data-act="close">✕</button></div>
+    <div class="sheet-body">
+      <p class="hint" style="margin-top:0">用 ↑ ↓ 调整顺序，顶部标签会跟着变。<br>「已归档」是系统内置分类，不能删也不能排序。</p>
+      <div class="cat-manage">
+        ${cats.length ? cats.map((c, idx) => `<div class="cat-manage-row">
+          <span class="idx">${idx + 1}</span>
+          <span class="cname">${emojiFor({ big: c })} ${esc(c)}</span>
+          <div class="btns">
+            <button class="mini-btn" data-act="moveUp" data-id="${esc(c)}" ${idx === 0 ? 'disabled' : ''} title="上移">↑</button>
+            <button class="mini-btn" data-act="moveDown" data-id="${esc(c)}" ${idx === cats.length - 1 ? 'disabled' : ''} title="下移">↓</button>
+            <button class="mini-btn del" data-act="delCat" data-id="${esc(c)}" title="删除">✕</button>
+          </div>
+        </div>`).join('') : '<p class="hint">还没有分类，点下面的按钮加一个吧。</p>'}
+      </div>
+      <button class="btn primary" style="margin:16px 0 14px" data-act="addCat">＋ 新增大分类</button>
+    </div>
+  `);
+}
+
+function exportData() {
+  const data = {
+    app: 'cute-stash',
+    version: 4,
+    exportedAt: new Date().toISOString(),
+    items,
+    settings
+  };
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `我的小仓库_${todayStr()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  toast('备份文件已生成 ✓');
+}
+
+/* ==================== 键盘适配 ==================== */
+function setupKeyboardAdjust() {
+  if (!window.visualViewport) return;
+  const vv = window.visualViewport;
+  const adjust = () => {
+    const sheet = document.getElementById('sheet');
+    if (!sheet) return;
+    if (!overlay.classList.contains('show')) {
+      sheet.style.marginBottom = '';
+      sheet.style.maxHeight = '';
+      return;
+    }
+    const layoutH = window.innerHeight;
+    const visibleH = vv.height;
+    const kb = Math.max(0, layoutH - visibleH);
+    sheet.style.marginBottom = kb > 60 ? kb + 'px' : '0px';
+    sheet.style.maxHeight = Math.min(visibleH * 0.94, layoutH * 0.94) + 'px';
+  };
+  window.__kbAdjust = adjust;
+  vv.addEventListener('resize', adjust);
+  vv.addEventListener('scroll', adjust);
+}
+
+/* ==================== 搜索处理 ==================== */
+let isComposing = false;
+
+function handleSearch() {
+  const v = $('#searchInput').value.trim();
+  const changed = v !== ui.q;
+  ui.q = v;
+  $('#clearSearch').hidden = !v;
+
+  if (changed) {
+    ui.big = '全部';
+    ui.sub = '全部';
+    ui.sub2 = '全部';
+  }
+  renderChips();
+  renderGrid();
+}
+
+function clearSearch() {
+  $('#searchInput').value = '';
+  ui.q = '';
+  $('#clearSearch').hidden = true;
+  renderChips();
+  renderGrid();
+}
+
+/* ==================== 事件绑定 ==================== */
+function bindEvents() {
+  const searchInput = $('#searchInput');
+
+  searchInput.addEventListener('compositionstart', () => { isComposing = true; });
+  searchInput.addEventListener('compositionend', () => {
+    isComposing = false;
+    handleSearch();
+  });
+  searchInput.addEventListener('input', () => {
+    if (isComposing) return;
+    handleSearch();
+  });
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+  });
+
+  $('#clearSearch').addEventListener('click', clearSearch);
+
+  $('#sortBtn').addEventListener('click', () => {
+    const idx = SORTS.findIndex(s => s[0] === ui.sort);
+    ui.sort = SORTS[(idx + 1) % SORTS.length][0];
+    $('#sortBtn').textContent = SORTS.find(s => s[0] === ui.sort)[1] + ' ▾';
+    renderGrid();
+  });
+
+  $('#favBtn').addEventListener('click', () => {
+    ui.favOnly = !ui.favOnly;
+    $('#favBtn').classList.toggle('on', ui.favOnly);
+    $('#favBtn').textContent = ui.favOnly ? '♥ 只看心头好' : '♡ 只看心头好';
+    renderGrid();
+  });
+
+  /* ★ 隐藏已归档开关 */
+  $('#hideArchivedBtn').addEventListener('click', () => {
+    ui.hideArchived = !ui.hideArchived;
+    $('#hideArchivedBtn').classList.toggle('on', ui.hideArchived);
+    $('#hideArchivedBtn').textContent = ui.hideArchived ? '👁️‍🗨️ 已隐藏归档' : '👁️ 隐藏已归档';
+    renderGrid();
+  });
+
+  $('#catChips').addEventListener('click', e => {
+    const b = e.target.closest('.chip');
+    if (!b) return;
+    ui.big = b.dataset.cat;
+    ui.sub = '全部';
+    ui.sub2 = '全部';
+    renderChips();
+    renderGrid();
+  });
+
+  $('#subChips').addEventListener('click', e => {
+    const b = e.target.closest('.chip');
+    if (!b) return;
+    ui.sub = b.dataset.sub;
+    ui.sub2 = '全部';
+    renderSubChips();
+    renderGrid();
+  });
+
+  $('#sub2Chips').addEventListener('click', e => {
+    const b = e.target.closest('.chip');
+    if (!b) return;
+    ui.sub2 = b.dataset.sub2;
+    renderSub2Chips();
+    renderGrid();
+  });
+
+  grid.addEventListener('click', e => {
+    const act = e.target.closest('[data-empty-act]');
+    if (act) {
+      const a = act.dataset.emptyAct;
+      if (a === 'resetFilter') {
+        ui.big = '全部'; ui.sub = '全部'; ui.sub2 = '全部';
+        renderChips();
+        renderGrid();
+      } else if (a === 'showArchived') {
+        ui.hideArchived = false;
+        $('#hideArchivedBtn').classList.remove('on');
+        $('#hideArchivedBtn').textContent = '👁️ 隐藏已归档';
+        renderGrid();
+      }
+      return;
+    }
+    const c = e.target.closest('.card');
+    if (!c) return;
+    openDetail(c.dataset.id);
+  });
+
+  $('#addBtn').addEventListener('click', () => openEdit(null));
+  $('#menuBtn').addEventListener('click', openMenu);
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeSheet();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closeSheet();
+  });
+
+  $('#photoInput').addEventListener('change', async e => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!f || !form) return;
+    try {
+      toast('处理图片中…');
+      form.photo = await compressImage(f, 900, 0.72);
+      renderPhoto();
+    } catch (err) {
+      toast('图片处理失败，换一张试试');
+    }
+  });
+
+  $('#importInput').addEventListener('change', async e => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!f) return;
+    try {
+      const text = await f.text();
+      const data = JSON.parse(text);
+      const list = Array.isArray(data) ? data : data.items;
+      if (!Array.isArray(list)) throw new Error('bad');
+      const clean = list.filter(x => x && x.id && x.name);
+      if (!clean.length) { toast('文件里没有可导入的物品'); return; }
+      if (!confirm(`将导入 ${clean.length} 件物品，同 ID 的会被覆盖，继续吗？`)) return;
+      await Store.bulkPut(clean);
+      if (data.settings && Array.isArray(data.settings.bigCats)) {
+        settings.bigCats = [...new Set([...settings.bigCats, ...data.settings.bigCats])];
+        await Store.setSetting('bigCats', settings.bigCats);
+      }
+      items = await Store.all();
+      closeSheet();
+      render();
+      toast(`导入成功，共 ${clean.length} 件 ✓`);
+    } catch (err) {
+      toast('导入失败：文件格式不对');
+    }
+  });
+
+  sheetContent.addEventListener('click', async e => {
+    const t = e.target.closest('[data-act]');
+    if (!t) return;
+    const act = t.dataset.act;
+    const id = t.dataset.id;
+
+    switch (act) {
+      case 'close': closeSheet(); break;
+      case 'edit': openEdit(id); break;
+      case 'delete': deleteItem(id); break;
+      case 'fav': toggleFav(id); break;
+
+      /* ★ 状态操作 */
+      case 'markSold': setStatus(id, 'sold'); break;
+      case 'markDiscarded': setStatus(id, 'discarded'); break;
+      case 'restore': setStatus(id, 'active'); break;
+
+      case 'pickPhoto': $('#photoInput').click(); break;
+      case 'removePhoto':
+        form.photo = '';
+        renderPhoto();
+        break;
+      case 'setBig':
+        form.big = id;
+        renderBigChips();
+        renderSubPicks();
+        break;
+      case 'newBig': newBigCat(); break;
+
+      case 'setSub': {
+        const inp = document.getElementById('f-sub');
+        if (inp) { inp.value = id; form.sub = id; }
+        renderSubPicks();
+        break;
+      }
+      case 'setSub2': {
+        const inp = document.getElementById('f-sub2');
+        if (inp) { inp.value = id; form.sub2 = id; }
+        renderSubPicks();
+        break;
+      }
+
+      case 'save': saveItem(); break;
+
+      case 'pickDate': {
+        openDatePicker(form.date, val => {
+          form.date = val;
+          updateDateBtn();
+        });
+        break;
+      }
+
+      case 'moveUp': {
+        const idx = settings.bigCats.indexOf(id);
+        if (idx > 0) {
+          [settings.bigCats[idx - 1], settings.bigCats[idx]] = [settings.bigCats[idx], settings.bigCats[idx - 1]];
+          await Store.setSetting('bigCats', settings.bigCats);
+          manageCats();
+          render();
+        }
+        break;
+      }
+      case 'moveDown': {
+        const idx = settings.bigCats.indexOf(id);
+        if (idx >= 0 && idx < settings.bigCats.length - 1) {
+          [settings.bigCats[idx], settings.bigCats[idx + 1]] = [settings.bigCats[idx + 1], settings.bigCats[idx]];
+          await Store.setSetting('bigCats', settings.bigCats);
+          manageCats();
+          render();
+        }
+        break;
+      }
+
+      case 'delCat': {
+        const used = items.some(i => (i.big || '未分类') === id);
+        if (used) { toast('还有物品在用这个分类哦'); return; }
+        settings.bigCats = settings.bigCats.filter(c => c !== id);
+        await Store.setSetting('bigCats', settings.bigCats);
+        manageCats();
+        render();
+        break;
+      }
+
+      case 'addCat': {
+        askInput('新增大分类', '例如：吧唧、色纸、明信片', '', async name => {
+          const clean = name.slice(0, 12);
+          if (!settings.bigCats.includes(clean)) settings.bigCats.push(clean);
+          await Store.setSetting('bigCats', settings.bigCats);
+          manageCats();
+          render();
+          toast(`已新建分类「${clean}」`);
+        });
+        break;
+      }
+
+      case 'menu': {
+        if (id === 'stats') showStats();
+        else if (id === 'cats') manageCats();
+        else if (id === 'export') exportData();
+        else if (id === 'import') $('#importInput').click();
+        else if (id === 'clear') {
+          if (!confirm('确定清空所有物品吗？此操作不可恢复！\n建议先导出备份。')) return;
+          await Store.clear();
+          items = [];
+          closeSheet();
+          render();
+          toast('已清空');
+        }
+        break;
+      }
+    }
+  });
+
+  document.addEventListener('input', e => {
+    if (!form) return;
+    if (e.target && e.target.id === 'f-sub') {
+      form.sub = e.target.value;
+      renderSubPicks();
+    } else if (e.target && e.target.id === 'f-sub2') {
+      form.sub2 = e.target.value;
+    }
+  });
+}
+
+/* ==================== 启动 ==================== */
+async function init() {
+  bindEvents();
+  bindDatePicker();
+  bindInputSheet();
+  setupKeyboardAdjust();
+  try {
+    await Store.init();
+    items = await Store.all();
+    /* 兼容老数据：确保 status 存在 */
+    items.forEach(it => { if (!it.status) it.status = 'active'; });
+    settings.bigCats = (await Store.getSetting('bigCats', DEFAULT_CATS)) || DEFAULT_CATS;
+    if (!Array.isArray(settings.bigCats) || !settings.bigCats.length) settings.bigCats = DEFAULT_CATS.slice();
+  } catch (e) {
+    console.error(e);
+    toast('数据加载出错');
+  }
+  render();
+}
+
+init();
+</script>
+</body>
+</html>
